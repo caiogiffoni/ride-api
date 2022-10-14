@@ -35,6 +35,25 @@ class UserWithToken {
 
 @Resolver()
 export class UserResolver {
+  @Query((returns) => [User], { nullable: true })
+  //  LISTA DE USERS
+  async users(@Ctx() ctx: Context): Promise<User[]> {
+    return ctx.prisma.users.findMany();
+  }
+
+  @Mutation((returns) => User)
+  // CREATE USER
+  async signUp(
+    @Arg("data") data: UserInputData,
+    @Ctx() ctx: Context
+  ): Promise<User> {
+    // HASH PASSWORD
+    const hashedPassword = await hash(data.password, 10);
+    return ctx.prisma.users.create({
+      data: { ...data, password: hashedPassword },
+    });
+  }
+
   @Query((returns) => User, { nullable: true })
   async privateInfo(
     @Arg("token") token: string,
@@ -49,17 +68,6 @@ export class UserResolver {
     const { user } = dbToken;
 
     return user;
-  }
-
-  @Mutation((returns) => User)
-  async signUp(
-    @Arg("data") data: UserInputData,
-    @Ctx() ctx: Context
-  ): Promise<User> {
-    const hashedPassword = await hash(data.password, 10);
-    return ctx.prisma.users.create({
-      data: { ...data, password: hashedPassword },
-    });
   }
 
   @Mutation((returns) => UserWithToken)
