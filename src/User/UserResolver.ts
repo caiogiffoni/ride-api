@@ -60,43 +60,43 @@ export class UserResolver {
     }
   }
 
-  @Query((returns) => User, { nullable: true })
-  async privateInfo(
-    @Arg("token") token: string,
-    @Ctx() ctx: Context
-  ): Promise<User | null> {
-    const dbToken = await ctx.prisma.tokens.findUnique({
-      where: { token },
-      include: { user: true },
-    });
-    if (!dbToken) return null;
+  // @Query((returns) => User, { nullable: true })
+  // async privateInfo(
+  //   @Arg("token") token: string,
+  //   @Ctx() ctx: Context
+  // ): Promise<User | null> {
+  //   const dbToken = await ctx.prisma.tokens.findUnique({
+  //     where: { token },
+  //     include: { user: true },
+  //   });
+  //   if (!dbToken) return null;
 
-    const { user } = dbToken;
+  //   const { user } = dbToken;
 
-    return user;
-  }
+  //   return user;
+  // }
 
-  @Mutation((returns) => UserWithToken)
-  async login(
-    @Arg("data") data: UserInputData,
-    @Ctx() ctx: Context
-  ): Promise<{ user: User; token: string } | null> {
-    const user = await ctx.prisma.users.findUnique({
-      where: { email: data.email },
-    });
+  // @Mutation((returns) => UserWithToken)
+  // async login(
+  //   @Arg("data") data: UserInputData,
+  //   @Ctx() ctx: Context
+  // ): Promise<{ user: User; token: string } | null> {
+  //   const user = await ctx.prisma.users.findUnique({
+  //     where: { email: data.email },
+  //   });
 
-    if (!user) return null;
+  //   if (!user) return null;
 
-    const validation = await compare(data.password, user.password);
+  //   const validation = await compare(data.password, user.password);
 
-    if (!validation) return null;
+  //   if (!validation) return null;
 
-    const tokenCode = uuid();
+  //   const tokenCode = uuid();
 
-    const token = await ctx.prisma.tokens.create({
-      data: { token: tokenCode, user: { connect: { id: user.id } } },
-    });
+  //   const token = await ctx.prisma.tokens.create({
+  //     data: { token: tokenCode, user: { connect: { id: user.id } } },
+  //   });
 
-    return { user, token: token.token };
-  }
+  //   return { user, token: token.token };
+  // }
 }

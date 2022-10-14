@@ -19,12 +19,29 @@ model Users {
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
-  tokens    Tokens[]
+  rides     Rides[]
+  registration Registratration[]
 }
 
-model Tokens {
-  id      String @id @default(uuid())
-  token   String @unique
-  user    Users  @relation(fields: [usersId], references: [id])
-  usersId String
+model Rides {
+  id                  String   @id @default(uuid())
+  name                String
+  start_date          DateTime
+  start_date_registration  DateTime 
+  end_date_registration  DateTime 
+  additional_information  String
+  start_place String
+  participants_limit Int
+  userId  String
+  user    Users  @relation(fields: [userId], references: [id])
+  registration Registratration[]
+}
+
+model Registratration {
+  id                  String   @id @default(uuid())
+  subscription_date  DateTime 
+  userId  String
+  user    Users  @relation(fields: [userId], references: [id])
+  RideId  String
+  ride    Rides  @relation(fields: [RideId], references: [id])
 }
