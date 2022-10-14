@@ -24,24 +24,24 @@ model Users {
 }
 
 model Rides {
-  id                  String   @id @default(uuid())
-  name                String
-  start_date          DateTime
-  start_date_registration  DateTime 
-  end_date_registration  DateTime 
+  id                      String   @id @default(uuid())
+  name                    String
+  start_date              DateTime
+  start_date_registration DateTime 
+  end_date_registration   DateTime 
   additional_information  String
-  start_place String
-  participants_limit Int
-  userId  String
+  start_place             String
+  participants_limit      Int
+  userId                  String
   user    Users  @relation(fields: [userId], references: [id])
   registration Registratration[]
 }
 
 model Registratration {
   id                  String   @id @default(uuid())
-  subscription_date  DateTime 
-  userId  String
+  subscription_date   DateTime 
+  userId              String
   user    Users  @relation(fields: [userId], references: [id])
-  RideId  String
+  RideId              String
   ride    Rides  @relation(fields: [RideId], references: [id])
 }
