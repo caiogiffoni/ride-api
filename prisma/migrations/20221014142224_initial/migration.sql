@@ -1,15 +1,12 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "Users" (
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-  - The primary key for the `Users` table will be changed. If it partially fails, the table could be left without primary key constraint.
-
-*/
--- AlterTable
-ALTER TABLE "Users" DROP CONSTRAINT "Users_pkey",
-ALTER COLUMN "id" DROP DEFAULT,
-ALTER COLUMN "id" SET DATA TYPE TEXT,
-ADD CONSTRAINT "Users_pkey" PRIMARY KEY ("id");
-DROP SEQUENCE "Users_id_seq";
+    CONSTRAINT "Users_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Tokens" (
@@ -19,6 +16,9 @@ CREATE TABLE "Tokens" (
 
     CONSTRAINT "Tokens_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Users_email_key" ON "Users"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Tokens_token_key" ON "Tokens"("token");

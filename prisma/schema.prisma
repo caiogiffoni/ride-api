@@ -23,7 +23,7 @@ model Users {
 }
 
 model Tokens {
-  id      String @id @default(cuid())
+  id      String @id @default(uuid())
   token   String @unique
   user    Users  @relation(fields: [usersId], references: [id])
   usersId String
