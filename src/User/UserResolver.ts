@@ -3,45 +3,23 @@ import { IsEmail } from "class-validator";
 import {
   Arg,
   Ctx,
-  Field,
-  InputType,
   Mutation,
-  ObjectType,
   Query,
   Resolver,
 } from "type-graphql";
 import { Context } from "../context";
-import { User } from "./User";
+import { ReturnUser, User, UserInputData, UserWithToken } from "./User";
 import { v4 as uuid } from "uuid";
-
-@InputType()
-class UserInputData {
-  @Field()
-  @IsEmail()
-  email: string;
-
-  @Field()
-  password: string;
-}
-
-@ObjectType()
-class UserWithToken {
-  @Field()
-  user: User;
-
-  @Field()
-  token: string;
-}
 
 @Resolver()
 export class UserResolver {
-  @Query((returns) => [User])
+  @Query((returns) => [ReturnUser])
   //  LIST USERS
   async users(@Ctx() ctx: Context): Promise<User[]> {
     return ctx.prisma.users.findMany();
   }
 
-  @Mutation((returns) => User)
+  @Mutation((returns) => ReturnUser)
   // CREATE USER
   async signUp(
     @Arg("data") data: UserInputData,
@@ -54,7 +32,7 @@ export class UserResolver {
     });
   }
 
-  @Query((returns) => User)
+  @Query((returns) => ReturnUser)
   //  LIST USER UNIQUE
   async user(@Arg("id") id: string, @Ctx() ctx: Context): Promise<User | null> {
     return ctx.prisma.users.findUnique({
