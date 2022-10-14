@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { ApolloServer } from "apollo-server";
 import { context } from "./context";
-import { UserResolver } from "./UserResolver";
+import { UserResolver } from "./User/UserResolver";
 import { buildSchema } from "type-graphql";
 
 const app = async () => {

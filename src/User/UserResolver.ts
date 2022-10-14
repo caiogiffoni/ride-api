@@ -10,7 +10,7 @@ import {
   Query,
   Resolver,
 } from "type-graphql";
-import { Context } from "./context";
+import { Context } from "../context";
 import { User } from "./User";
 import { v4 as uuid } from "uuid";
 
