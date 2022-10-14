@@ -64,7 +64,7 @@ export class UserResolver {
     });
   }
 
-  @Mutation()
+  @Mutation((returns) => String)
   //  DELETE USER
   async deleteUser(
     @Arg("id") id: string,
