@@ -8,6 +8,7 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/express": "^4.17.14",
+    "@types/jsonwebtoken": "^8.5.9",
     "@types/node": "^18.8.5",
     "prisma": "^4.3.0",
     "ts-node-dev": "^2.0.0",
@@ -29,6 +30,7 @@
     "graphql": "^15.3.0",
     "graphql-fields": "^2.0.3",
     "graphql-scalars": "^1.19.0",
+    "jsonwebtoken": "^8.5.1",
     "pg": "^8.8.0",
     "reflect-metadata": "^0.1.13",
     "tslib": "^2.4.0",
