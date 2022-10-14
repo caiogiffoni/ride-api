@@ -41,10 +41,7 @@ export class UserInputData {
 }
 
 @ObjectType()
-export class UserWithToken {
-  @Field()
-  user: User;
-
+export class ResponseToken {
   @Field()
   token: string;
 }

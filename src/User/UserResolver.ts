@@ -1,15 +1,10 @@
 import { compare, hash } from "bcryptjs";
 import { IsEmail } from "class-validator";
-import {
-  Arg,
-  Ctx,
-  Mutation,
-  Query,
-  Resolver,
-} from "type-graphql";
+import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { Context } from "../context";
-import { ReturnUser, User, UserInputData, UserWithToken } from "./User";
-import { v4 as uuid } from "uuid";
+import { ResponseToken, ReturnUser, User, UserInputData } from "./User";
+import jwt from "jsonwebtoken";
+import "dotenv/config";
 
 @Resolver()
 export class UserResolver {
@@ -60,6 +55,33 @@ export class UserResolver {
     }
   }
 
+  @Mutation((returns) => ResponseToken)
+  async login(
+    @Arg("data") data: UserInputData,
+    @Ctx() ctx: Context
+  ): Promise<ResponseToken | null> {
+    const user = await ctx.prisma.users.findUnique({
+      where: { email: data.email },
+    });
+
+    if (!user) return null;
+
+    const validation = await compare(data.password, user.password);
+
+    if (!validation) return null;
+
+    const token = jwt.sign(
+      {
+        id: user.id, //preciso inserir dentro do token tanto o id do user
+      },
+      process.env.SECRET_KEY as string, //preciso desse alias pq caso contrário gera error.
+      {
+        expiresIn: "24h",
+      }
+    );
+
+    return { token: token };
+  }
   // @Query((returns) => User, { nullable: true })
   // async privateInfo(
   //   @Arg("token") token: string,
@@ -74,29 +96,5 @@ export class UserResolver {
   //   const { user } = dbToken;
 
   //   return user;
-  // }
-
-  // @Mutation((returns) => UserWithToken)
-  // async login(
-  //   @Arg("data") data: UserInputData,
-  //   @Ctx() ctx: Context
-  // ): Promise<{ user: User; token: string } | null> {
-  //   const user = await ctx.prisma.users.findUnique({
-  //     where: { email: data.email },
-  //   });
-
-  //   if (!user) return null;
-
-  //   const validation = await compare(data.password, user.password);
-
-  //   if (!validation) return null;
-
-  //   const tokenCode = uuid();
-
-  //   const token = await ctx.prisma.tokens.create({
-  //     data: { token: tokenCode, user: { connect: { id: user.id } } },
-  //   });
-
-  //   return { user, token: token.token };
   // }
 }
