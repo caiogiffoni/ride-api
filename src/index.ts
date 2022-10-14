@@ -8,7 +8,7 @@ const app = async () => {
   const schema = await buildSchema({ resolvers: [UserResolver] });
 
   new ApolloServer({ schema, context: context }).listen({ port: 3000 }, () =>
-    console.log(`Server is running on port 🚀`)
+    console.log(`Server is running 🚀`)
   );
 };
 
