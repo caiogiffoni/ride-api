@@ -1,14 +1,13 @@
 import { compare, hash } from "bcryptjs";
 import { IsEmail } from "class-validator";
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
-import { Context } from "../context";
 import { Rides } from "./Rides";
 
 @Resolver()
 export class RidesResolver {
   @Query((returns) => [Rides])
   //  LIST USERS
-  async rides(@Ctx() ctx: Context): Promise<Rides[]> {
+  async rides(@Ctx() ctx: any): Promise<Rides[]> {
     return ctx.prisma.rides.findMany();
   }
 

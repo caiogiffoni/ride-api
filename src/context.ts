@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
 // async function main() {
 //   const allUsers = await prisma.users.findMany();
@@ -17,10 +17,11 @@ const prisma = new PrismaClient();
 //     process.exit(1);
 //   });
 
-export interface Context {
-  prisma: PrismaClient;
-}
+// export interface Context {
+//   prisma: PrismaClient;
 
-export const context: Context = {
-  prisma,
-};
+// }
+
+// export const context: Context = {
+//   prisma,
+// };

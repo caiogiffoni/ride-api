@@ -1,16 +1,28 @@
 import { compare, hash } from "bcryptjs";
 import { IsEmail } from "class-validator";
-import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
-import { Context } from "../context";
+import {
+  Arg,
+  Ctx,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware,
+} from "type-graphql";
+
 import { ResponseToken, ReturnUser, User, UserInputData } from "./User";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
+import { Context } from "..";
+import { isAuth } from "../middlewares/isAuth";
 
 @Resolver()
 export class UserResolver {
+  @UseMiddleware(isAuth)
   @Query((returns) => [ReturnUser])
   //  LIST USERS
   async users(@Ctx() ctx: Context): Promise<User[]> {
+    // console.log("ctx");
+    // console.log(ctx);
     return ctx.prisma.users.findMany();
   }
 
@@ -18,7 +30,7 @@ export class UserResolver {
   // CREATE USER
   async signUp(
     @Arg("data") data: UserInputData,
-    @Ctx() ctx: Context
+    @Ctx() ctx: any
   ): Promise<User> {
     // HASH PASSWORD
     const hashedPassword = await hash(data.password, 10);
@@ -29,7 +41,7 @@ export class UserResolver {
 
   @Query((returns) => ReturnUser)
   //  LIST USER UNIQUE
-  async user(@Arg("id") id: string, @Ctx() ctx: Context): Promise<User | null> {
+  async user(@Arg("id") id: string, @Ctx() ctx: any): Promise<User | null> {
     return ctx.prisma.users.findUnique({
       where: {
         id: id,
@@ -41,7 +53,7 @@ export class UserResolver {
   //  DELETE USER
   async deleteUser(
     @Arg("id") id: string,
-    @Ctx() ctx: Context
+    @Ctx() ctx: any
   ): Promise<User | string> {
     try {
       await ctx.prisma.users.delete({
@@ -58,7 +70,7 @@ export class UserResolver {
   @Mutation((returns) => ResponseToken)
   async login(
     @Arg("data") data: UserInputData,
-    @Ctx() ctx: Context
+    @Ctx() ctx: any
   ): Promise<ResponseToken | null> {
     const user = await ctx.prisma.users.findUnique({
       where: { email: data.email },
