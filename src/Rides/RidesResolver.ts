@@ -41,15 +41,22 @@ export class RidesResolver {
     });
   }
 
-  // @Query((returns) => ReturnUser)
-  // //  LIST USER UNIQUE
-  // async user(@Arg("id") id: string, @Ctx() ctx: Context): Promise<User | null> {
-  //   return ctx.prisma.users.findUnique({
-  //     where: {
-  //       id: id,
-  //     },
-  //   });
-  // }
+  @Query((returns) => Rides)
+  //  LIST RIDE UNIQUE
+  async ride(
+    @Arg("rideId") rideId: string,
+    @Ctx() ctx: Context
+  ): Promise<Rides | string> {
+    const ride = await ctx.prisma.rides.findUnique({
+      where: {
+        id: rideId,
+      },
+    });
+    if (!ride) {
+      throw new Error("Ride not Found");
+    }
+    return ride;
+  }
 
   // @Mutation((returns) => String)
   // //  DELETE USER
