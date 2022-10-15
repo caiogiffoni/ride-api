@@ -1,4 +1,3 @@
-import { IsEmail } from "class-validator";
 import {
   Arg,
   Ctx,
@@ -41,6 +40,7 @@ export class RidesResolver {
     });
   }
 
+  @UseMiddleware(isAuth)
   @Query((returns) => Rides)
   //  LIST RIDE UNIQUE
   async ride(
@@ -58,21 +58,36 @@ export class RidesResolver {
     return ride;
   }
 
-  // @Mutation((returns) => String)
-  // //  DELETE USER
-  // async deleteUser(
-  //   @Arg("id") id: string,
-  //   @Ctx() ctx: Context
-  // ): Promise<User | string> {
-  //   try {
-  //     await ctx.prisma.users.delete({
-  //       where: {
-  //         id: id,
-  //       },
-  //     });
-  //     return "Deleted User";
-  //   } catch {
-  //     return "False";
-  //   }
-  // }
+  @UseMiddleware(isAuth)
+  @Query((returns) => [Rides])
+  //  LIST RIDES BY USER
+  async userRides(@Ctx() ctx: Context): Promise<Rides[]> {
+    const rides = await ctx.prisma.rides.findMany({
+      where: {
+        userId: ctx.idUser,
+      },
+    });
+    return rides;
+  }
+
+  @UseMiddleware(isAuth)
+  @Mutation((returns) => String)
+  //  DELETE RIDE
+  async deleteRide(
+    @Arg("rideId") rideId: string,
+    @Ctx() ctx: Context
+  ): Promise<string> {
+    const ride = await ctx.prisma.rides.findUnique({
+      where: {
+        id: rideId,
+      },
+    });
+    if (!ride) {
+      throw new Error("Ride not Found");
+    }
+
+    await ctx.prisma.rides.delete({ where: { id: ride.id } });
+
+    return "Deleted Ride";
+  }
 }
