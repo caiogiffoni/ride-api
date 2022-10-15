@@ -68,16 +68,16 @@ export class UserResolver {
   async login(
     @Arg("data") data: UserInputData,
     @Ctx() ctx: any
-  ): Promise<ResponseToken | null> {
+  ): Promise<ResponseToken> {
     const user = await ctx.prisma.users.findUnique({
       where: { email: data.email },
     });
 
-    if (!user) return null;
+    if (!user) throw new Error("Invalid Credentials");
 
     const validation = await compare(data.password, user.password);
 
-    if (!validation) return null;
+    if (!validation) throw new Error("Invalid Credentials");
 
     const token = jwt.sign(
       {
