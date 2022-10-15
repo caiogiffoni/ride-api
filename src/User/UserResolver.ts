@@ -41,27 +41,30 @@ export class UserResolver {
   @Query((returns) => ReturnUser)
   //  LIST USER UNIQUE
   async user(@Arg("id") id: string, @Ctx() ctx: any): Promise<User | null> {
-    return await ctx.prisma.users.findUnique({
+    const user = await ctx.prisma.users.delete({
       where: {
         id: id,
       },
     });
+
+    if (!user) throw new Error("User not Found");
+
+    return user;
   }
 
   @UseMiddleware(isAuth)
   @Mutation((returns) => String)
   //  DELETE USER
   async deleteUser(@Arg("id") id: string, @Ctx() ctx: any): Promise<string> {
-    try {
-      await ctx.prisma.users.delete({
-        where: {
-          id: id,
-        },
-      });
-      return "Deleted User";
-    } catch {
-      return "False";
-    }
+    const user = await ctx.prisma.users.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!user) throw new Error("User not Found");
+    
+    return "Deleted User";
   }
 
   @Query((returns) => ResponseToken)
