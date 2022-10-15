@@ -56,14 +56,16 @@ export class UserResolver {
   @Mutation((returns) => String)
   //  DELETE USER
   async deleteUser(@Arg("id") id: string, @Ctx() ctx: any): Promise<string> {
-    const user = await ctx.prisma.users.delete({
+    const user = await ctx.prisma.users.findUnique({
       where: {
         id: id,
       },
     });
 
     if (!user) throw new Error("User not Found");
-    
+
+    await ctx.prisma.users.delete({ where: { id: user.id } });
+
     return "Deleted User";
   }
 
