@@ -1,28 +1,45 @@
-import { compare, hash } from "bcryptjs";
 import { IsEmail } from "class-validator";
-import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
-import { Rides } from "./Rides";
+import {
+  Arg,
+  Ctx,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware,
+} from "type-graphql";
+import { Context } from "..";
+import { isAuth } from "../middlewares/isAuth";
+import { RideInputData, Rides } from "./Rides";
 
 @Resolver()
 export class RidesResolver {
+  @UseMiddleware(isAuth)
   @Query((returns) => [Rides])
-  //  LIST USERS
+  //  LIST RIDES
   async rides(@Ctx() ctx: any): Promise<Rides[]> {
     return ctx.prisma.rides.findMany();
   }
 
-  // @Mutation((returns) => ReturnUser)
-  // // CREATE USER
-  // async signUp(
-  //   @Arg("data") data: UserInputData,
-  //   @Ctx() ctx: Context
-  // ): Promise<User> {
-  //   // HASH PASSWORD
-  //   const hashedPassword = await hash(data.password, 10);
-  //   return ctx.prisma.users.create({
-  //     data: { ...data, password: hashedPassword },
-  //   });
-  // }
+  @UseMiddleware(isAuth)
+  @Mutation((returns) => Rides)
+  // CREATE RIDES
+  async createRide(
+    @Arg("data") data: RideInputData,
+    @Ctx() ctx: Context
+  ): Promise<Rides> {
+    const user = await ctx.prisma.users.findUnique({
+      where: {
+        id: ctx.idUser,
+      },
+    });
+    if (!user) {
+      throw new Error("User not Found");
+    }
+    console.log(user);
+    return await ctx.prisma.rides.create({
+      data: { ...data, userId: user.id },
+    });
+  }
 
   // @Query((returns) => ReturnUser)
   // //  LIST USER UNIQUE

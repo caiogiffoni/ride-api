@@ -47,15 +47,29 @@ export class Rides {
 //   createdAt: Date;
 // }
 
-// @InputType()
-// export class UserInputData {
-//   @Field()
-//   @IsEmail()
-//   email: string;
+@InputType()
+export class RideInputData {
+  @Field()
+  name: string;
 
-//   @Field()
-//   password: string;
-// }
+  @Field()
+  start_date: Date;
+
+  @Field()
+  start_date_registration: Date;
+
+  @Field()
+  end_date_registration: Date;
+
+  @Field()
+  additional_information: string;
+
+  @Field()
+  start_place: string;
+
+  @Field()
+  participants_limit: number;
+}
 
 // @ObjectType()
 // export class UserWithToken {

@@ -11,8 +11,8 @@ const prisma = new PrismaClient();
 export interface Context {
   prisma: PrismaClient;
   req: Request;
-  token: String | undefined;
-  idUser: String;
+  token: string | undefined;
+  idUser: string;
 }
 
 const app = async () => {
