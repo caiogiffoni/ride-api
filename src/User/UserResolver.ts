@@ -64,7 +64,7 @@ export class UserResolver {
     }
   }
 
-  @Mutation((returns) => ResponseToken)
+  @Query((returns) => ResponseToken)
   async login(
     @Arg("data") data: UserInputData,
     @Ctx() ctx: any
