@@ -1,5 +1,4 @@
 import { Field, ObjectType, ID, InputType } from "type-graphql";
-import { IsEmail } from "class-validator";
 
 @ObjectType()
 export class Rides {
