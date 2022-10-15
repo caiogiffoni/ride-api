@@ -12,6 +12,7 @@ export interface Context {
   prisma: PrismaClient;
   req: Request;
   token: String | undefined;
+  idUser: String;
 }
 
 const app = async () => {
@@ -22,7 +23,7 @@ const app = async () => {
   new ApolloServer({
     schema,
     context: ({ req }) => {
-      return { prisma, req, token: req?.headers?.authorization };
+      return { prisma, req, token: req?.headers?.authorization, idUser: "" };
     },
   }).listen({ port: 3000 }, () => console.log(`Server is running 🚀`));
 };
