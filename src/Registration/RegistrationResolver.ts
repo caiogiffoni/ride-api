@@ -85,7 +85,7 @@ export class RegistrationResolver {
     });
     if (!registration) throw new Error("Registration not Found");
 
-    await ctx.prisma.rides.delete({ where: { id: registration.id } });
+    await ctx.prisma.registratration.delete({ where: { id: registration.id } });
     return "Deleted Registration";
   }
 }
