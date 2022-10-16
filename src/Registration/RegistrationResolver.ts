@@ -74,7 +74,7 @@ export class RegistrationResolver {
   @UseMiddleware(isAuth)
   @Mutation((returns) => String)
   //  DELETE REGISTRATION
-  async deleteRegistratioin(
+  async deleteRegistration(
     @Arg("registrationId") registrationId: string,
     @Ctx() ctx: Context
   ): Promise<string> {
