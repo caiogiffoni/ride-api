@@ -16,7 +16,7 @@ export interface Context {
   idUser: string;
 }
 
-const app = async () => {
+export const app = async () => {
   const schema = await buildSchema({
     resolvers: [UserResolver, RidesResolver, RegistrationResolver],
   });
