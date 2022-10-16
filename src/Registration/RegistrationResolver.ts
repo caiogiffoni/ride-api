@@ -25,15 +25,25 @@ export class RegistrationResolver {
   async createRegistration(
     @Arg("rideId") rideId: string,
     @Ctx() ctx: Context
-  ): Promise<Registration> {
+  ): Promise<Registration | string> {
     const user = await ctx.prisma.users.findUnique({
       where: {
         id: ctx.idUser,
       },
     });
-    if (!user) {
-      throw new Error("User not Found");
-    }
+    if (!user) throw new Error("User not Found");
+    const ride = await ctx.prisma.rides.findUnique({
+      where: {
+        id: rideId,
+      },
+    });
+    if (!ride) throw new Error("Ride not Found");
+
+    const today = new Date(Date.now());
+
+    if (today > ride.end_date_registration)
+      throw new Error("Registration date overdue");
+
     return await ctx.prisma.registratration.create({
       data: {
         rideId,
