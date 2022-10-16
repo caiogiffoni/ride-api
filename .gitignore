@@ -2,6 +2,7 @@ commands/
 /node_modules
 /dist
 .env
+backlog.txt
 
 # Logs
 logs

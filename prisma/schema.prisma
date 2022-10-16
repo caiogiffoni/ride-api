@@ -42,6 +42,6 @@ model Registratration {
   subscription_date   DateTime 
   userId              String
   user    Users  @relation(fields: [userId], references: [id])
-  RideId              String
-  ride    Rides  @relation(fields: [RideId], references: [id])
+  rideId              String
+  ride    Rides  @relation(fields: [rideId], references: [id])
 }
