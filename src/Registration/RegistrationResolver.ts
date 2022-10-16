@@ -8,7 +8,7 @@ import {
 } from "type-graphql";
 import { Context } from "..";
 import { isAuth } from "../middlewares/isAuth";
-import { Registration } from "./Registration";
+import { Registration, RegistrationRide } from "./Registration";
 
 @Resolver()
 export class RegistrationResolver {
@@ -67,6 +67,21 @@ export class RegistrationResolver {
     });
     if (!registration) throw new Error("Registration not Found");
     return registration;
+  }
+
+  @UseMiddleware(isAuth)
+  @Query((returns) => [RegistrationRide])
+  //  LIST USER REGISTRATIONS RIDE
+  async myRegistration(@Ctx() ctx: Context): Promise<RegistrationRide[]> {
+    const registrations = await ctx.prisma.registratration.findMany({
+      where: {
+        userId: ctx.idUser,
+      },
+      include: {
+        ride: true,
+      },
+    });
+    return registrations;
   }
 
   // @UseMiddleware(isAuth)
