@@ -5,6 +5,7 @@ import { buildSchema } from "type-graphql";
 import { RidesResolver } from "./Rides/RidesResolver";
 import { PrismaClient } from "@prisma/client";
 import { Request } from "express";
+import { RegistrationResolver } from "./Registration/RegistrationResolver";
 
 const prisma = new PrismaClient();
 
@@ -17,7 +18,7 @@ export interface Context {
 
 const app = async () => {
   const schema = await buildSchema({
-    resolvers: [UserResolver, RidesResolver],
+    resolvers: [UserResolver, RidesResolver, RegistrationResolver],
   });
 
   new ApolloServer({
