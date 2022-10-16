@@ -15,7 +15,7 @@ export class RidesResolver {
   @UseMiddleware(isAuth)
   @Query((returns) => [Rides])
   //  LIST RIDES
-  async rides(@Ctx() ctx: any): Promise<Rides[]> {
+  async rides(@Ctx() ctx: Context): Promise<Rides[]> {
     return ctx.prisma.rides.findMany();
   }
 
