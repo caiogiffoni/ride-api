@@ -6,6 +6,7 @@ import { RidesResolver } from "./Rides/RidesResolver";
 import { PrismaClient } from "@prisma/client";
 import { Request } from "express";
 import { RegistrationResolver } from "./Registration/RegistrationResolver";
+import "dotenv/config";
 
 const prisma = new PrismaClient();
 
@@ -21,12 +22,16 @@ const app = async () => {
     resolvers: [UserResolver, RidesResolver, RegistrationResolver],
   });
 
+  const url = process.env.PORT || 3000;
+
   new ApolloServer({
     schema,
     context: ({ req }) => {
       return { prisma, req, token: req?.headers?.authorization, idUser: "" };
     },
-  }).listen({ port: 3000 }, () => console.log(`Server is running 🚀`));
+  }).listen({ port: url }, () =>
+    console.log(`Server is running on port ${url} 🚀`)
+  );
 };
 
 app();
