@@ -40,7 +40,7 @@ export class UserResolver {
   @UseMiddleware(isAuth)
   @Query((returns) => ReturnUser)
   //  LIST USER UNIQUE
-  async user(@Arg("id") id: string, @Ctx() ctx: any): Promise<User | null> {
+  async user(@Arg("id") id: string, @Ctx() ctx: Context): Promise<User | null> {
     const user = await ctx.prisma.users.delete({
       where: {
         id: id,
@@ -55,7 +55,7 @@ export class UserResolver {
   @UseMiddleware(isAuth)
   @Mutation((returns) => String)
   //  DELETE USER
-  async deleteUser(@Arg("id") id: string, @Ctx() ctx: any): Promise<string> {
+  async deleteUser(@Arg("id") id: string, @Ctx() ctx: Context): Promise<string> {
     const user = await ctx.prisma.users.findUnique({
       where: {
         id: id,
@@ -72,7 +72,7 @@ export class UserResolver {
   @Query((returns) => ResponseToken)
   async login(
     @Arg("data") data: UserInputData,
-    @Ctx() ctx: any
+    @Ctx() ctx: Context
   ): Promise<ResponseToken> {
     const user = await ctx.prisma.users.findUnique({
       where: { email: data.email },
