@@ -14,16 +14,19 @@ export const isAuth: MiddlewareFn<Context> = async (
 
   const splitToken = token.split(" ")[1];
 
+  let errorToken = "";
+
   jwt.verify(
     splitToken,
     process.env.SECRET_KEY as string,
     async (error: any, decoded: any) => {
       if (error) {
-        throw new Error("Invalid token");
+        errorToken = error;
+      } else {
+        context.idUser = decoded.id;
       }
-
-      context.idUser = decoded.id;
     }
   );
+  if (errorToken) throw new Error("Invalid token");
   return next();
 };
