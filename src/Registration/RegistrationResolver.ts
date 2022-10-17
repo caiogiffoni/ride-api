@@ -84,18 +84,6 @@ export class RegistrationResolver {
     return registrations;
   }
 
-  // @UseMiddleware(isAuth)
-  // @Query((returns) => [Rides])
-  // //  LIST RIDES BY USER
-  // async userRides(@Ctx() ctx: Context): Promise<Rides[]> {
-  //   const rides = await ctx.prisma.rides.findMany({
-  //     where: {
-  //       userId: ctx.idUser,
-  //     },
-  //   });
-  //   return rides;
-  // }
-
   @UseMiddleware(isAuth)
   @Mutation((returns) => String)
   //  DELETE REGISTRATION

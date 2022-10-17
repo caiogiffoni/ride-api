@@ -52,7 +52,6 @@ export class RidesResolver {
     if (!user) {
       throw new Error("User not Found");
     }
-    console.log(user);
     return await ctx.prisma.rides.create({
       data: { ...data, userId: user.id },
     });

@@ -29,22 +29,9 @@ export class Rides {
   @Field((type) => String)
   userId: String;
 
-  // @Field({ nullable: true })
-  // registration: String;
 }
 
-// @ObjectType()
-// export class ReturnUser {
-//   @Field((type) => ID)
-//   id: string;
 
-//   @Field()
-//   @IsEmail()
-//   email: string;
-
-//   @Field((type) => Date)
-//   createdAt: Date;
-// }
 
 @InputType()
 export class RideInputData {
@@ -69,12 +56,3 @@ export class RideInputData {
   @Field()
   participants_limit: number;
 }
-
-// @ObjectType()
-// export class UserWithToken {
-//   @Field()
-//   user: User;
-
-//   @Field()
-//   token: string;
-// }
