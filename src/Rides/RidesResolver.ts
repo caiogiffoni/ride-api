@@ -21,7 +21,7 @@ export class RidesResolver {
     const cacheKey = "rides:all";
     const cachedRides = await redis.get(cacheKey);
     if (!!cachedRides) {
-      const rides = JSON.parse(cachedRides, function (key, value) {
+      const rides = JSON.parse(cachedRides, (key, value) => {
         const listKeys = [
           "start_date",
           "start_date_registration",
@@ -44,14 +44,14 @@ export class RidesResolver {
     @Arg("data") data: RideInputData,
     @Ctx() ctx: Context
   ): Promise<Rides> {
+    const cacheKey = "rides:all";
     const user = await ctx.prisma.users.findUnique({
       where: {
         id: ctx.idUser,
       },
     });
-    if (!user) {
-      throw new Error("User not Found");
-    }
+    if (!user) throw new Error("User not Found");
+    await redis.del(cacheKey);
     return await ctx.prisma.rides.create({
       data: { ...data, userId: user.id },
     });
@@ -69,9 +69,7 @@ export class RidesResolver {
         id: rideId,
       },
     });
-    if (!ride) {
-      throw new Error("Ride not Found");
-    }
+    if (!ride) throw new Error("Ride not Found");
     return ride;
   }
 
@@ -94,16 +92,18 @@ export class RidesResolver {
     @Arg("rideId") rideId: string,
     @Ctx() ctx: Context
   ): Promise<string> {
+    const cacheKey = "rides:all";
+
     const ride = await ctx.prisma.rides.findUnique({
       where: {
         id: rideId,
       },
     });
-    if (!ride) {
-      throw new Error("Ride not Found");
-    }
+    if (!ride) throw new Error("Ride not Found");
 
     await ctx.prisma.rides.delete({ where: { id: ride.id } });
+
+    await redis.del(cacheKey);
 
     return "Deleted Ride";
   }
