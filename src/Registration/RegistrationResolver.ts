@@ -40,8 +40,8 @@ export class RegistrationResolver {
     if (!ride) throw new Error("Ride not Found");
 
     const today = new Date(Date.now());
-
     if (today > ride.end_date_registration)
+    // PASSOU DA DATA DE INSCRIÇÃO
       throw new Error("Registration date overdue");
 
     return await ctx.prisma.registrations.create({
