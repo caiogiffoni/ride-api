@@ -38,6 +38,7 @@
     "graphql": "^15.3.0",
     "graphql-fields": "^2.0.3",
     "graphql-scalars": "^1.19.0",
+    "ioredis": "^5.2.3",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.8.0",
     "reflect-metadata": "^0.1.13",

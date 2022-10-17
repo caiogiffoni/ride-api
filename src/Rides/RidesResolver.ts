@@ -1,3 +1,4 @@
+import { PrismaPromise } from "@prisma/client";
 import {
   Arg,
   Ctx,
@@ -8,6 +9,7 @@ import {
 } from "type-graphql";
 import { Context } from "..";
 import { isAuth } from "../middlewares/isAuth";
+import redis from "../utils/cache";
 import { RideInputData, Rides } from "./Rides";
 
 @Resolver()
@@ -15,8 +17,24 @@ export class RidesResolver {
   @UseMiddleware(isAuth)
   @Query((returns) => [Rides])
   //  LIST RIDES
-  async rides(@Ctx() ctx: Context): Promise<Rides[]> {
-    return ctx.prisma.rides.findMany();
+  async rides(@Ctx() ctx: Context): Promise<Rides[] | string> {
+    const cacheKey = "rides:all";
+    const cachedRides = await redis.get(cacheKey);
+    if (!!cachedRides) {
+      const rides = JSON.parse(cachedRides, function (key, value) {
+        const listKeys = [
+          "start_date",
+          "start_date_registration",
+          "end_date_registration",
+        ];
+        return listKeys.includes(key) ? new Date(value) : value;
+      });
+
+      return rides;
+    }
+    const rides = await ctx.prisma.rides.findMany();
+    await redis.set(cacheKey, JSON.stringify(rides));
+    return rides;
   }
 
   @UseMiddleware(isAuth)
