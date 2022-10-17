@@ -34,6 +34,11 @@ Uma API que irá possibilitar a criação de pedais pelos usuários, além disso
 - [x] Prisma
 - [x] Docker / Docker compose
 - [x] Redis
+  
+
+## 📋 Tabelas
+
+![DER](diagrams.png)
 
 ## 🌐 Deploy
 
