@@ -16,7 +16,7 @@ export class RegistrationResolver {
   @Query((returns) => [Registration])
   //  LIST REGISTRATION
   async registrations(@Ctx() ctx: Context): Promise<Registration[]> {
-    return ctx.prisma.registratration.findMany();
+    return ctx.prisma.registrations.findMany();
   }
 
   @UseMiddleware(isAuth)
@@ -44,7 +44,7 @@ export class RegistrationResolver {
     if (today > ride.end_date_registration)
       throw new Error("Registration date overdue");
 
-    return await ctx.prisma.registratration.create({
+    return await ctx.prisma.registrations.create({
       data: {
         rideId,
         userId: user.id,
@@ -60,7 +60,7 @@ export class RegistrationResolver {
     @Arg("registrationId") registrationId: string,
     @Ctx() ctx: Context
   ): Promise<Registration | string> {
-    const registration = await ctx.prisma.registratration.findUnique({
+    const registration = await ctx.prisma.registrations.findUnique({
       where: {
         id: registrationId,
       },
@@ -73,7 +73,7 @@ export class RegistrationResolver {
   @Query((returns) => [RegistrationRide])
   //  LIST USER REGISTRATIONS RIDE
   async myRegistration(@Ctx() ctx: Context): Promise<RegistrationRide[]> {
-    const registrations = await ctx.prisma.registratration.findMany({
+    const registrations = await ctx.prisma.registrations.findMany({
       where: {
         userId: ctx.idUser,
       },
@@ -103,14 +103,14 @@ export class RegistrationResolver {
     @Arg("registrationId") registrationId: string,
     @Ctx() ctx: Context
   ): Promise<string> {
-    const registration = await ctx.prisma.registratration.findUnique({
+    const registration = await ctx.prisma.registrations.findUnique({
       where: {
         id: registrationId,
       },
     });
     if (!registration) throw new Error("Registration not Found");
 
-    await ctx.prisma.registratration.delete({ where: { id: registration.id } });
+    await ctx.prisma.registrations.delete({ where: { id: registration.id } });
     return "Deleted Registration";
   }
 }

@@ -20,7 +20,7 @@ model Users {
   password  String
   createdAt DateTime @default(now())
   rides     Rides[]
-  registration Registratration[]
+  registration Registrations[]
 }
 
 model Rides {
@@ -34,10 +34,10 @@ model Rides {
   participants_limit      Int
   userId                  String
   user    Users  @relation(fields: [userId], references: [id])
-  registration Registratration[]
+  registration Registrations[]
 }
 
-model Registratration {
+model Registrations {
   id                  String   @id @default(uuid())
   subscription_date   DateTime 
   userId              String
