@@ -20,7 +20,7 @@ Uma API que irá possibilitar a criação de pedais pelos usuários, além disso
 - [x] Dados persistindo no PostgreSQL
 - [x] Cache persistindo utilizando Redis
 - [x] Utilizado Docker
-- [x] Pipeline CICD construída
+- [x] Pipeline CICD construída no Github Actions
 - [ ] Testes implementados - NÃO IMPLEMENTADO AINDA
 - [ ] Deploy no heroku - NÃO IMPLEMENTADO AINDA
 
@@ -28,12 +28,12 @@ Uma API que irá possibilitar a criação de pedais pelos usuários, além disso
 
 - [x] NodeJs
 - [x] Typescript
-- [x] Express;
-- [x] Apollo Server;
-- [x] TypeGraphQL;
-- [x] Prisma;
+- [x] Express
+- [x] Apollo Server
+- [x] TypeGraphQL
+- [x] Prisma
 - [x] Docker / Docker compose
-- [x] Redis;
+- [x] Redis
 
 ## 🌐 Deploy
 
@@ -49,7 +49,7 @@ Clone o repositório na sua máquina
 
 ### 1.2. Variáveis de ambiente
 
-Crie um arquivo **.env**, copiando o exemplo **.env.example**.
+Crie um arquivo **.env** copiando o exemplo **.env.example**.
 Configure conforme credenciais do Postgres.
 
 ### 1.3. Vá a pasta e rode o Docker
@@ -69,17 +69,19 @@ docker compose up
 rode:
 
 ```
-docker exec -it cnba-reader-web-1 bash
+docker exec -it api_rides bash
 ```
 
 e dentro do terminal bash do docker, rode:
 
 ```
-python manage.py generate_transactions
+yarn prisma migrate dev
 ```
+
+para criação das tabelas.
 
 ### 1.5. Use a aplicação em:
 
-http://localhost:8000/home/
+http://localhost:3000/
 
-e faça upload do seu arquivo CNBA em formato .txt
+com o auxílio do apollo server
