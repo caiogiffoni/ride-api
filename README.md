@@ -11,7 +11,7 @@ Uma API que irá possibilitar a criação de pedais pelos usuários, além disso
 - [x] Tabela User, Pedals e Registration criadas
 - [x] Usuário cadastra pedal e pode se inscrever no pedal (tabela registration)
 - [x] Create, read and delete para todas as entidades
-- [x] Middleware de autenticação utilizado com lib jwtwebtoken. Requisições devem seguir Authentication: Bearer <THE.JWT.TOKEN>
+- [x] Middleware de autenticação utilizado com lib jsonwebtoken. Requisições devem seguir Authentication: Bearer <THE.JWT.TOKEN>
 - [x] Pedais que o usuário criou estão na query userRides
 - [x] Lista os pedais que o usuário participou na query myRegistration
 - [x] Não permitir inscrição em pedais depois da última data de inscrição
